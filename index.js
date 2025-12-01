@@ -2,7 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import authRoutes from './api/routes/index.js'; // importa tus rutas
+import authRoutes from './api/routes/authRoutes.js'; // importa tus rutas
 
 dotenv.config();
 const app = express();
