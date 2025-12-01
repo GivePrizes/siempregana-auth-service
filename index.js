@@ -9,7 +9,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://tu-frontend.vercel.app"
+    "https://siempre-ganas.vercel.app"
   ],
   methods: ["GET", "POST", "PUT", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
