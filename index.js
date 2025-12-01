@@ -2,6 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import authRoutes from './api/routes/index.js'; // importa tus rutas
 
 dotenv.config();
 const app = express();
@@ -18,12 +19,13 @@ app.use(cors({
 
 app.use(express.json());
 
+// ✅ Montar rutas de auth
+app.use('/api/auth', authRoutes);
+
 // Ruta raíz
 app.get('/', (req, res) => {
   res.send('AUTH SERVICE OK 🚀');
 });
-
-// Puedes agregar más rutas aquí si lo deseas
 
 // Exportar como función serverless
 export default function handler(req, res) {
