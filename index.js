@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import authRoutes from './api/routes/authRoutes.js'; // importa tus rutas
 
 dotenv.config();
+
 const app = express();
 
 app.use(cors({
@@ -19,7 +20,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// ✅ Montar rutas de auth
+//  Montar rutas de auth
 app.use('/api/auth', authRoutes);
 
 // Ruta raíz
@@ -28,6 +29,4 @@ app.get('/', (req, res) => {
 });
 
 // Exportar como función serverless
-export default function handler(req, res) {
-  app(req, res);
-}
+export default app;

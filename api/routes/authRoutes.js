@@ -1,5 +1,5 @@
 // api/routes/authRoutes.js
-import { Router } from 'express';                // 👈 IMPORTANTE
+import { Router } from 'express';
 import { registro, login, validate } from '../controllers/authController.js';
 import { verifyToken } from '../middleware/jwtValidate.js';
 

@@ -1,14 +1,21 @@
+// api/middleware/jwtValidate.js
 import jwt from 'jsonwebtoken';
 
 export const verifyToken = (req, res, next) => {
-  const auth = req.headers.authorization;
-  if (!auth?.startsWith('Bearer ')) return res.status(401).json({ error: 'Token requerido' });
-  
-  const token = auth.split(' ')[1];
+  const authHeader = req.headers['authorization'] || req.headers['Authorization'];
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'No se proporcionó token.' });
+  }
+
+  const token = authHeader.split(' ')[1];
+
   try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // { id, email, rol }
     next();
-  } catch (err) {
-    res.status(403).json({ error: 'Token inválido' });
+  } catch (error) {
+    console.error('Error en JWT:', error);
+    return res.status(401).json({ message: 'Token inválido o expirado.' });
   }
 };
