@@ -29,12 +29,19 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: 'Credenciales inválidas.' });
     }
 
+    // permisos temporales (luego lo conectamos a BD)
+    const permisos = user.rol === 'admin'
+      ? ['cuentas:gestionar']  // después aquí pondrás permisos reales por admin
+      : [];
+
+
     // Generar JWT
     const token = jwt.sign(
-      { id: user.id, email: user.email, rol: user.rol },
+      { id: user.id, email: user.email, rol: user.rol, permisos },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
+
 
     // No devolvemos password_hash
     delete user.password_hash;
