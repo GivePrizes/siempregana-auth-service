@@ -29,10 +29,17 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: 'Credenciales inválidas.' });
     }
 
-    // permisos temporales (luego lo conectamos a BD)
-    const permisos = user.rol === 'admin'
-      ? ['cuentas:gestionar']  // después aquí pondrás permisos reales por admin
-      : [];
+    // Determinar si el usuario es admin de cuentas (whitelist por email)
+    const adminsCuentas = (process.env.ADMINS_CUENTAS_EMAILS || '')
+      .split(',')
+      .map(s => s.trim().toLowerCase())
+      .filter(Boolean);
+
+    const permisos =
+      user.rol === 'admin' && adminsCuentas.includes(user.email.toLowerCase())
+        ? ['cuentas:gestionar']
+        : [];
+
 
 
     // Generar JWT
