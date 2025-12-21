@@ -31,14 +31,16 @@ export const login = async (req, res) => {
 
     // Determinar si el usuario es admin de cuentas (whitelist por email)
     const adminsCuentas = (process.env.ADMINS_CUENTAS_EMAILS || '')
-      .split(',')
-      .map(s => s.trim().toLowerCase())
-      .filter(Boolean);
+      .split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
 
-    const permisos =
-      user.rol === 'admin' && adminsCuentas.includes(user.email.toLowerCase())
-        ? ['cuentas:gestionar']
-        : [];
+    const adminsPagos = (process.env.ADMINS_PAGOS_EMAILS || '')
+      .split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+
+    const permisos = [];
+    if (user.rol === 'admin') {
+      if (adminsCuentas.includes(user.email.toLowerCase())) permisos.push('cuentas:gestionar');
+      if (adminsPagos.includes(user.email.toLowerCase())) permisos.push('pagos:aprobar');
+    }
 
 
 
